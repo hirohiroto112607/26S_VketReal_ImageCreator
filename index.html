@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VketReal 2025 Summer am pass card ジェネレーター</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Visualization & Content Choices:
+        - Base Image: Loaded onto canvas as background. Goal: Provide template. Method: Canvas `drawImage()`. Source: User-provided URL (placeholder initially).
+        - Name/SNS: Text input fields. Goal: User identification. Method: Canvas `fillText()`. Interaction: Real-time update on input.
+        - User Image: File input. Goal: Personalization. Method: Canvas `drawImage()` after FileReader. Interaction: Display uploaded image in designated frame.
+        - Date Selection: Checkboxes. Goal: Indicate attendance. Method: Canvas `arc()` for circles, `fillText()` for speech bubble. Interaction: Update circles and text on selection.
+        - Download: Button. Goal: Export customized card. Method: `canvas.toDataURL()`.
+        - Hashtag: Text display + Button. Goal: Promote event. Method: `navigator.clipboard.writeText()`.
+        - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style type="text/tailwindcss">
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .control-label {
+            @apply block text-sm font-medium text-slate-700 mb-1;
+        }
+        .text-input {
+            @apply mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-pink-500 focus:ring-1 focus:ring-pink-500;
+        }
+        .btn {
+            @apply px-4 py-2 rounded-md font-semibold text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2;
+        }
+        .btn-primary {
+            @apply bg-pink-500 hover:bg-pink-600 text-white focus:ring-pink-500;
+        }
+        .btn-secondary {
+            @apply bg-slate-200 hover:bg-slate-300 text-slate-700 focus:ring-slate-400;
+        }
+        /* Ensure canvas is responsive but has a max-width to prevent it from becoming too large on desktop */
+        .canvas-container {
+            position: relative;
+            width: 100%;
+            max-width: 640px; /* Adjust as needed, half of 1280 for better display */
+            margin-left: auto;
+            margin-right: auto;
+        }
+        canvas {
+            display: block;
+            width: 100%;
+            height: auto;
+            background-color: #f0f0f0;
+            border-radius: 0.375rem; /* rounded-md */
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 py-8 px-4">
+
+    <div class="container mx-auto max-w-5xl">
+        <header class="mb-8 text-center">
+            <h1 class="text-3xl font-bold text-pink-600">VketReal 2025 Summer</h1>
+            <p class="text-xl text-slate-700">am pass card ジェネレーター</p>
+        </header>
+
+        <div class="bg-white p-6 rounded-lg shadow-xl mb-6">
+            <p class="text-sm text-slate-600 mb-4">
+                このツールを使って、VketReal 2025 Summerのオリジナル参加表明カードを作成しましょう！
+                名前、SNSアカウント、お気に入りの画像を設定し、参加する日にちを選んで、あなただけのカードを生成できます。
+                完成したカードはダウンロードしてSNSでシェアしましょう！
+            </p>
+            <div class="mb-4">
+                <label for="baseImageUrl" class="control-label">ベースカード画像URL (GpdS_2VbMAAuYT-.png のURL):</label>
+                <input type="text" id="baseImageUrl" class="text-input" value="https://pbs.twimg.com/media/GpdS_2VbMAAuYT-?format=png&name=large" placeholder="例: https://example.com/your_vket_card_base.png">
+                <p class="text-xs text-slate-500 mt-1">提供されたVketRealカード画像 (GpdS_2VbMAAuYT-.png) のURLを入力してください。推奨サイズ: 1280x720px。</p>
+                <button id="loadBaseImageBtn" class="btn btn-secondary mt-2">ベース画像を読み込む</button>
+            </div>
+        </div>
+
+        <div class="flex flex-col lg:flex-row gap-8">
+            <div class="lg:w-1/3 bg-white p-6 rounded-lg shadow-xl">
+                <h2 class="text-xl font-semibold mb-4 text-pink-600">カスタマイズ情報</h2>
+                <div class="space-y-4">
+                    <div>
+                        <label for="nameInput" class="control-label">名前:</label>
+                        <input type="text" id="nameInput" class="text-input" placeholder="Vketちゃん">
+                    </div>
+                    <div>
+                        <label for="snsInput" class="control-label">SNSアカウント:</label>
+                        <input type="text" id="snsInput" class="text-input" placeholder="@VketReal">
+                    </div>
+                    <div>
+                        <label for="imageUpload" class="control-label">プロフィール画像:</label>
+                        <input type="file" id="imageUpload" accept="image/*" class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-pink-50 file:text-pink-700 hover:file:bg-pink-100">
+                    </div>
+                    <div>
+                        <span class="control-label">参加日程:</span>
+                        <div class="mt-2 space-y-2">
+                            <label class="flex items-center">
+                                <input type="checkbox" id="date26" class="h-4 w-4 text-pink-600 border-slate-300 rounded focus:ring-pink-500">
+                                <span class="ml-2 text-sm text-slate-700">7月26日 (SAT)</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" id="date27" class="h-4 w-4 text-pink-600 border-slate-300 rounded focus:ring-pink-500">
+                                <span class="ml-2 text-sm text-slate-700">7月27日 (SUN)</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="pt-4">
+                        <button id="downloadButton" class="btn btn-primary w-full">画像を生成・ダウンロード</button>
+                    </div>
+                    <div class="pt-2 text-center">
+                        <p class="text-sm text-slate-600">イベント公式ハッシュタグ:</p>
+                        <div class="flex items-center justify-center gap-2 mt-1">
+                           <span id="hashtag" class="font-semibold text-pink-600">#VketReal参加</span>
+                           <button id="copyHashtagButton" class="btn btn-secondary text-xs p-1">コピー</button>
+                        </div>
+                         <div id="copyMessage" class="text-xs text-green-500 mt-1 h-4"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:w-2/3">
+                 <h2 class="text-xl font-semibold mb-4 text-pink-600 text-center lg:text-left">プレビュー</h2>
+                <div class="canvas-container bg-white p-2 rounded-lg shadow-xl">
+                    <canvas id="passCardCanvas"></canvas>
+                </div>
+                <p class="text-xs text-slate-500 mt-2 text-center">ここにカスタマイズされたカードが表示されます。</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('passCardCanvas');
+        const ctx = canvas.getContext('2d');
+
+        const nameInput = document.getElementById('nameInput');
+        const snsInput = document.getElementById('snsInput');
+        const imageUpload = document.getElementById('imageUpload');
+        const date26Checkbox = document.getElementById('date26');
+        const date27Checkbox = document.getElementById('date27');
+        const downloadButton = document.getElementById('downloadButton');
+        const copyHashtagButton = document.getElementById('copyHashtagButton');
+        const hashtagText = document.getElementById('hashtag').innerText;
+        const copyMessage = document.getElementById('copyMessage');
+        const baseImageUrlInput = document.getElementById('baseImageUrl');
+        const loadBaseImageBtn = document.getElementById('loadBaseImageBtn');
+
+        const CANVAS_WIDTH = 1280;
+        const CANVAS_HEIGHT = 720;
+        canvas.width = CANVAS_WIDTH;
+        canvas.height = CANVAS_HEIGHT;
+
+        let baseImage = new Image();
+        let userImage = null;
+        let baseImageLoaded = false;
+
+        baseImage.crossOrigin = "anonymous";
+
+        function loadBaseImage() {
+            const imageUrl = baseImageUrlInput.value.trim();
+            if (!imageUrl) {
+                alert("ベースカード画像のURLを入力してください。");
+                return;
+            }
+            baseImage.src = imageUrl;
+        }
+        
+        baseImage.onload = () => {
+            baseImageLoaded = true;
+            redrawCanvas();
+        };
+        baseImage.onerror = () => {
+            baseImageLoaded = false;
+            ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+            ctx.fillStyle = '#dddddd';
+            ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+            ctx.fillStyle = 'black';
+            ctx.font = '30px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('ベース画像の読み込みに失敗しました。', CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2 - 20);
+            ctx.fillText('正しいURLを確認してください。', CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2 + 20);
+            alert('ベース画像の読み込みに失敗しました。URLを確認してください。');
+        };
+        
+        loadBaseImageBtn.addEventListener('click', loadBaseImage);
+
+
+        function redrawCanvas() {
+            if (!baseImageLoaded) {
+                ctx.fillStyle = '#e0e0e0';
+                ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+                ctx.fillStyle = 'black';
+                ctx.font = '24px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText('ベース画像を読み込んでください', CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);
+                return;
+            }
+
+            ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+            ctx.drawImage(baseImage, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+
+            // Draw User Image 
+            if (userImage) {
+                const imgX = 783, imgY = 33, imgWidth = 385, imgHeight = 385; // Adjusted position and size
+                let sWidth = userImage.width;
+                let sHeight = userImage.height;
+                let sx = 0;
+                let sy = 0;
+                const imgAspectRatio = userImage.width / userImage.height;
+                const boxAspectRatio = imgWidth / imgHeight;
+
+                if (imgAspectRatio > boxAspectRatio) {
+                    sHeight = userImage.height;
+                    sWidth = sHeight * boxAspectRatio;
+                    sx = (userImage.width - sWidth) / 2;
+                } else {
+                    sWidth = userImage.width;
+                    sHeight = sWidth / boxAspectRatio;
+                    sy = (userImage.height - sHeight) / 2;
+                }
+                ctx.drawImage(userImage, sx, sy, sWidth, sHeight, imgX, imgY, imgWidth, imgHeight);
+            }
+
+            // Draw Name (shifted further right)
+            ctx.fillStyle = '#333333';
+            ctx.font = 'bold 32px sans-serif';
+            ctx.textAlign = 'left';
+            ctx.fillText(nameInput.value || '', 90 + 80, 465); // Increased shift
+
+            // Draw SNS (shifted further right)
+            ctx.fillText(snsInput.value || '', 90 + 80, 560);
+            
+            // Draw Date Selections (Circles moved slightly left and up from bottom right)
+            ctx.strokeStyle = '#FF3B7F';
+            ctx.lineWidth = 8;
+            const circleRadius = 60;
+            const dateCircleY = 585; // New Y position for circles (moved up)
+
+            if (date26Checkbox.checked) {
+                ctx.beginPath();
+                ctx.arc(888, dateCircleY, circleRadius, 0, Math.PI * 2); // New X, Y for 26th (moved left)
+                ctx.stroke();
+            }
+            if (date27Checkbox.checked) {
+                ctx.beginPath();
+                ctx.arc(1022, dateCircleY, circleRadius, 0, Math.PI * 2); // New X, Y for 27th (moved left)
+                ctx.stroke();
+            }
+            // Right-bottom speech bubble text is removed as per request
+        }
+
+        nameInput.addEventListener('input', redrawCanvas);
+        snsInput.addEventListener('input', redrawCanvas);
+        date26Checkbox.addEventListener('change', redrawCanvas);
+        date27Checkbox.addEventListener('change', redrawCanvas);
+
+        imageUpload.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    userImage = new Image();
+                    userImage.onload = () => {
+                        redrawCanvas();
+                    };
+                    userImage.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                userImage = null;
+                redrawCanvas();
+            }
+        });
+
+        downloadButton.addEventListener('click', () => {
+            if (!baseImageLoaded) {
+                alert("ベース画像を読み込んでからダウンロードしてください。");
+                return;
+            }
+            const dataURL = canvas.toDataURL('image/png');
+            const a = document.createElement('a');
+            a.href = dataURL;
+            const filename = (nameInput.value.trim().replace(/\s+/g, '_') || 'vket_user') + '_pass_card.png';
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        });
+
+        copyHashtagButton.addEventListener('click', () => {
+            navigator.clipboard.writeText(hashtagText)
+                .then(() => {
+                    copyMessage.textContent = 'コピーしました！';
+                    setTimeout(() => { copyMessage.textContent = ''; }, 2000);
+                })
+                .catch(err => {
+                    copyMessage.textContent = 'コピーに失敗しました';
+                    console.error('Failed to copy hashtag: ', err);
+                    setTimeout(() => { copyMessage.textContent = ''; }, 2000);
+                });
+        });
+        
+        window.onload = () => {
+            if (baseImageUrlInput.value.trim()) {
+                 loadBaseImage();
+            } else {
+                 redrawCanvas();
+            }
+        };
+
+    </script>
+</body>
+</html>
