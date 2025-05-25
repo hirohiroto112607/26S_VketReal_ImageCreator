@@ -54,21 +54,20 @@
     <div class="container mx-auto max-w-5xl">
         <header class="mb-8 text-center">
             <h1 class="text-3xl font-bold text-pink-600">VketReal 2025 Summer</h1>
-            <p class="text-xl text-slate-700">am pass card ジェネレーター</p>
+            <p class="text-xl text-slate-700">参加表明カードジェネレーター</p>
         </header>
 
         <div class="bg-white p-6 rounded-lg shadow-xl mb-6">
             <p class="text-sm text-slate-600 mb-4">
-                このツールを使って、VketReal 2025 Summerのオリジナル参加表明カードを作成しましょう！
-                名前、SNSアカウント、お気に入りの画像を設定し、参加する日にちを選んで、あなただけのカードを生成できます。
+                このツールを使って、VketReal 2025 Summerのオリジナル参加表明カードを作成しましょう！<br>
+                名前、SNSアカウント、お気に入りの画像を設定し、参加する日にちを選んで、あなただけのカードを生成できます。<br>
                 完成したカードはダウンロードしてSNSでシェアしましょう！
             </p>
-            <div class="mb-4">
-                <label for="baseImageUrl" class="control-label">ベースカード画像URL (GpdS_2VbMAAuYT-.png のURL):</label>
-                <input type="text" id="baseImageUrl" class="text-input" value="https://pbs.twimg.com/media/GpdS_2VbMAAuYT-?format=png&name=large" placeholder="例: https://example.com/your_vket_card_base.png">
-                <p class="text-xs text-slate-500 mt-1">提供されたVketRealカード画像 (GpdS_2VbMAAuYT-.png) のURLを入力してください。推奨サイズ: 1280x720px。</p>
-                <button id="loadBaseImageBtn" class="btn btn-secondary mt-2">ベース画像を読み込む</button>
-            </div>
+        </div>
+
+        <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-6" role="alert">
+            <p class="font-bold">注意</p>
+            <p>このツールは非公式のものであり、VketReal 2025 Summerの公式ツールではありません。</p>
         </div>
 
         <div class="flex flex-col lg:flex-row gap-8">
@@ -103,13 +102,14 @@
                     <div class="pt-4">
                         <button id="downloadButton" class="btn btn-primary w-full">画像を生成・ダウンロード</button>
                     </div>
-                    <div class="pt-2 text-center">
-                        <p class="text-sm text-slate-600">イベント公式ハッシュタグ:</p>
-                        <div class="flex items-center justify-center gap-2 mt-1">
-                           <span id="hashtag" class="font-semibold text-pink-600">#VketReal参加</span>
-                           <button id="copyHashtagButton" class="btn btn-secondary text-xs p-1">コピー</button>
-                        </div>
-                         <div id="copyMessage" class="text-xs text-green-500 mt-1 h-4"></div>
+                   
+                    <div>
+                        <a id="tweetLink" href="https://twitter.com/intent/tweet" target="_blank" rel="noopener noreferrer">
+                        <button class="btn btn-secondary w-full mt-2" type="button">
+                          <img src="https://abs.twimg.com/icons/apple-touch-icon-192x192.png" alt="Twitter Icon" class="inline-block w-4 h-4 mr-2">
+                          ツイートする
+                        </button>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -134,11 +134,9 @@
         const date26Checkbox = document.getElementById('date26');
         const date27Checkbox = document.getElementById('date27');
         const downloadButton = document.getElementById('downloadButton');
-        const copyHashtagButton = document.getElementById('copyHashtagButton');
-        const hashtagText = document.getElementById('hashtag').innerText;
         const copyMessage = document.getElementById('copyMessage');
-        const baseImageUrlInput = document.getElementById('baseImageUrl');
-        const loadBaseImageBtn = document.getElementById('loadBaseImageBtn');
+        const tweetLink = document.getElementById('tweetLink');
+        const baseImageUrl = "https://pbs.twimg.com/media/GpdS_2VbMAAuYT-?format=png&name=large"; // ベース画像のURLを直接指定
 
         const CANVAS_WIDTH = 1280;
         const CANVAS_HEIGHT = 720;
@@ -152,12 +150,7 @@
         baseImage.crossOrigin = "anonymous";
 
         function loadBaseImage() {
-            const imageUrl = baseImageUrlInput.value.trim();
-            if (!imageUrl) {
-                alert("ベースカード画像のURLを入力してください。");
-                return;
-            }
-            baseImage.src = imageUrl;
+            baseImage.src = baseImageUrl;
         }
         
         baseImage.onload = () => {
@@ -177,7 +170,7 @@
             alert('ベース画像の読み込みに失敗しました。URLを確認してください。');
         };
         
-        loadBaseImageBtn.addEventListener('click', loadBaseImage);
+        loadBaseImage();
 
 
         function redrawCanvas() {
@@ -244,10 +237,29 @@
             // Right-bottom speech bubble text is removed as per request
         }
 
+        function updateTweetLink() {
+            let tweetText = "VketReal 2025 Summerに参加します！";
+            if (date26Checkbox.checked && date27Checkbox.checked) {
+                tweetText = "VketReal 2025 Summerに7月26日と27日で参加します！";
+            } else if (date26Checkbox.checked) {
+                tweetText = "VketReal 2025 Summerに7月26日に参加します！";
+            } else if (date27Checkbox.checked) {
+                tweetText = "VketReal 2025 Summerに7月27日に参加します！";
+            }
+            const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}&hashtags=VketReal参加`;
+            tweetLink.href = tweetUrl;
+        }
+
         nameInput.addEventListener('input', redrawCanvas);
         snsInput.addEventListener('input', redrawCanvas);
-        date26Checkbox.addEventListener('change', redrawCanvas);
-        date27Checkbox.addEventListener('change', redrawCanvas);
+        date26Checkbox.addEventListener('change', () => {
+            redrawCanvas();
+            updateTweetLink();
+        });
+        date27Checkbox.addEventListener('change', () => {
+            redrawCanvas();
+            updateTweetLink();
+        });
 
         imageUpload.addEventListener('change', (event) => {
             const file = event.target.files[0];
@@ -282,25 +294,11 @@
             document.body.removeChild(a);
         });
 
-        copyHashtagButton.addEventListener('click', () => {
-            navigator.clipboard.writeText(hashtagText)
-                .then(() => {
-                    copyMessage.textContent = 'コピーしました！';
-                    setTimeout(() => { copyMessage.textContent = ''; }, 2000);
-                })
-                .catch(err => {
-                    copyMessage.textContent = 'コピーに失敗しました';
-                    console.error('Failed to copy hashtag: ', err);
-                    setTimeout(() => { copyMessage.textContent = ''; }, 2000);
-                });
-        });
+
         
         window.onload = () => {
-            if (baseImageUrlInput.value.trim()) {
-                 loadBaseImage();
-            } else {
-                 redrawCanvas();
-            }
+            loadBaseImage();
+            updateTweetLink();
         };
 
     </script>
