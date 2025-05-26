@@ -26,7 +26,7 @@ body {
 .canvas-container {
   position: relative;
   width: 100%;
-  max-width: 640px; /* 640px から 500px に変更 */
+  max-width: 640px;
   /* Adjust as needed, half of 1280 for better display */
   margin-left: auto;
   margin-right: auto;
