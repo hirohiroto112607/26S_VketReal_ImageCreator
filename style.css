@@ -356,7 +356,108 @@ canvas {
   background: linear-gradient(135deg, rgba(16, 33, 43, 0.85), rgba(16, 33, 43, 0.92));
 }
 
+.privacy-notice {
+  background: linear-gradient(135deg, rgba(79, 109, 122, 0.08), rgba(255, 255, 255, 0.95));
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+  overflow: hidden;
+}
 
+.notice-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 24px 16px;
+  background: linear-gradient(135deg, rgba(79, 109, 122, 0.05), rgba(79, 109, 122, 0.02));
+  border-bottom: 1px solid var(--border);
+}
+
+.notice-icon {
+  font-size: 1.5rem;
+  color: var(--primary);
+}
+
+.notice-title {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.notice-content {
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.notice-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.notice-text {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.notice-links {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+}
+
+.link-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.link-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: rgba(79, 109, 122, 0.06);
+  color: var(--primary);
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.link-button:hover {
+  background: rgba(79, 109, 122, 0.12);
+  border-color: var(--primary);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(79, 109, 122, 0.15);
+}
+
+.link-button i {
+  font-size: 0.8rem;
+}
+
+@media (max-width: 600px) {
+  .notice-header {
+    padding: 16px 20px 12px;
+  }
+
+  .notice-content {
+    padding: 16px 20px;
+  }
+
+  .link-buttons {
+    gap: 6px;
+  }
+}
 
 .app-footer {
   margin-top: clamp(32px, 6vw, 48px);
