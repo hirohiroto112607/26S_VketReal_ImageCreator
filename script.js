@@ -18,29 +18,56 @@ canvas.height = CANVAS_HEIGHT;
 let baseImage = new Image();
 let userImage = null;
 let baseImageLoaded = false;
+let baseImages = {};
+let allImagesLoaded = false;
+
+function preloadImages() {
+  const urls = ['VkketReal25W-20.webp', 'VkketReal25W-21.webp', 'VkketReal25W-20_21.webp'];
+  let loadedCount = 0;
+  urls.forEach(url => {
+    const img = new Image();
+    img.onload = () => {
+      baseImages[url] = img;
+      loadedCount++;
+      if (loadedCount === urls.length) {
+        allImagesLoaded = true;
+        loadBaseImage(); // 初期読み込み
+      }
+    };
+    img.src = url;
+  });
+}
+
 function getImageUrl() {
     const date20 = document.getElementById('date20').checked;
     const date21 = document.getElementById('date21').checked;
     if (date20 && date21) {
-        return 'VkketReal25W-20_21.png';
+        return 'VkketReal25W-20_21.webp';
     } else if (date20) {
-        return 'VkketReal25W-20.png';
+        return 'VkketReal25W-20.webp';
     } else if (date21) {
-        return 'VkketReal25W-21.png';
+        return 'VkketReal25W-21.webp';
     } else {
         // デフォルトは両方
-        return 'VkketReal25W-20_21.png';
+        return 'VkketReal25W-20_21.webp';
     }
 }
 
 function loadBaseImage() {
-    const img = new Image();
-    img.onload = function() {
-        baseImage = img;
+    if (allImagesLoaded) {
+        baseImage = baseImages[getImageUrl()];
         baseImageLoaded = true;
         redrawCanvas();
-    };
-    img.src = getImageUrl();
+    } else {
+        // フォールバック: まだプリロードされていない場合
+        const img = new Image();
+        img.onload = function() {
+            baseImage = img;
+            baseImageLoaded = true;
+            redrawCanvas();
+        };
+        img.src = getImageUrl();
+    }
 }
 
 function redrawCanvas() {
@@ -158,10 +185,10 @@ downloadButton.addEventListener('click', () => {
     alert("ベース画像を読み込んでからダウンロードしてください。");
     return;
   }
-  const dataURL = canvas.toDataURL('image/png');
+  const dataURL = canvas.toDataURL('image/webp');
   const a = document.createElement('a');
   a.href = dataURL;
-  const filename = (nameInput.value.trim().replace(/\s+/g, '_') || 'vket_user') + '_pass_card.png';
+  const filename = (nameInput.value.trim().replace(/\s+/g, '_') || 'vket_user') + '_profile_card.webp';
   a.download = filename;
   document.body.appendChild(a);
   a.click();
@@ -169,6 +196,6 @@ downloadButton.addEventListener('click', () => {
 });
 
 window.onload = () => {
-  loadBaseImage();
+  preloadImages();
   updateTweetLink();
 };

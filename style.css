@@ -356,14 +356,7 @@ canvas {
   background: linear-gradient(135deg, rgba(16, 33, 43, 0.85), rgba(16, 33, 43, 0.92));
 }
 
-.preview-hints {
-  padding: 14px 16px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--surface);
-  font-size: 0.9rem;
-  color: var(--text-muted);
-}
+
 
 .app-footer {
   margin-top: clamp(32px, 6vw, 48px);
