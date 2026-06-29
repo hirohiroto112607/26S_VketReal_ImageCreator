@@ -1,5 +1,4 @@
 {
-	"$schema": "https://www.schemastore.org/package.json",
 	"name": "vketreal-image-creator",
 	"version": "1.0.0",
 	"description": "VketReal 2026 Summer 参加表明カードジェネレーター",
