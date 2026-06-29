@@ -4,12 +4,9 @@
   "description": "VketReal 2025 Winter参加表明カードジェネレーター",
   "main": "index.html",
   "scripts": {
-    "build:css": "npx tailwindcss -i ./src/input.css -o ./tailwind.css --watch",
-    "build:css:prod": "npx tailwindcss -i ./src/input.css -o ./tailwind.css --minify",
-    "serve": "npx serve",
-    "dev": "pnpm build:css:prod & pnpm serve",
-    "lint": "eslint --fix 'src/**/*.{js,ts}'",
-    "lint-fix": "eslint --fix './src/**/*.{js,ts}' && prettier --write './src /**/*.{js,ts}'"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "keywords": [
     "VketReal",
@@ -21,9 +18,11 @@
   "devDependencies": {
     "autoprefixer": "^10.4.16",
     "postcss": "^8.4.32",
-    "tailwindcss": "^3.4.0"
+    "tailwindcss": "^3.4.0",
+    "typescript": "^6.0.3",
+    "vite": "^8.1.0"
   },
   "dependencies": {
-    
+    "baseline-browser-mapping": "^2.10.40"
   }
 }
