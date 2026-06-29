@@ -12,6 +12,7 @@ const IMG_RADIUS = 22;
 
 export class CanvasRenderer {
   private readonly canvas: HTMLCanvasElement;
+  // biome-ignore lint/correctness/noUnusedPrivateClassMembers: used in redraw()
   private readonly ctx: CanvasRenderingContext2D;
   private readonly baseImages = new Map<string, HTMLImageElement>();
   private baseImage: HTMLImageElement | null = null;

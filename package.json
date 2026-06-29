@@ -1,29 +1,30 @@
 {
-	"name": "vketreal-image-creator",
-	"version": "1.0.0",
-	"description": "VketReal 2026 Summer 参加表明カードジェネレーター",
-	"main": "index.html",
-	"scripts": {
-		"dev": "vite",
-		"build": "vite build",
-		"preview": "vite preview"
-	},
-	"keywords": [
-		"VketReal",
-		"card-generator",
-		"tailwindcss"
-	],
-	"author": "VketReal Team",
-	"license": "MIT",
-	"devDependencies": {
-		"autoprefixer": "^10.4.16",
-		"postcss": "^8.4.32",
-		"tailwindcss": "^3.4.0",
-		"typescript": "^6.0.3",
-		"vite": "^8.1.0",
-		"wrangler": "^4.105.0"
-	},
-	"dependencies": {
-		"baseline-browser-mapping": "^2.10.40"
-	}
+  "$schema": "https://json.schemastore.org/package",
+  "name": "vketreal-image-creator",
+  "version": "1.0.0",
+  "description": "VketReal 2026 Summer 参加表明カードジェネレーター",
+  "main": "index.html",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "keywords": [
+    "VketReal",
+    "card-generator",
+    "tailwindcss"
+  ],
+  "author": "VketReal Team",
+  "license": "MIT",
+  "devDependencies": {
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.32",
+    "tailwindcss": "^3.4.0",
+    "typescript": "^6.0.3",
+    "vite": "^8.1.0",
+    "wrangler": "^4.105.0"
+  },
+  "dependencies": {
+    "baseline-browser-mapping": "^2.10.40"
+  }
 }

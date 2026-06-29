@@ -23,6 +23,6 @@ export const EVENT_CONFIG = {
   ] as const satisfies readonly DateOption[],
   bothDatesImage: "/VketReal26S_25_26.png",
   tweetHashtags: "VketReal参加",
-  tweetUrl: "https://2026s.imagecreator.vrugd.jp/",
-  tweetBaseText: "VketReal 2026 Summerに参加します!",
+  tweetUrl: "https://vketreal-imagecreator.pages.dev",
+  tweetBaseText: "VketReal 2026 Summerに行きます!",
 } as const;
