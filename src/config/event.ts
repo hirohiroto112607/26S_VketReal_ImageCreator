@@ -9,13 +9,13 @@ export const EVENT_CONFIG = {
   title: "VketReal 2026 Summer",
   dates: [
     {
-      id: "date25",
+      id: "day1",
       label: "7月25日 (SAT)",
       dateText: "7月25日",
       image: "/VketReal26S_25.png",
     },
     {
-      id: "date26",
+      id: "day2",
       label: "7月26日 (SUN)",
       dateText: "7月26日",
       image: "/VketReal26S_26.png",

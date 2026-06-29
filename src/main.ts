@@ -2,23 +2,23 @@ import "./style.css";
 import { CanvasRenderer } from "./canvas/renderer";
 import { EVENT_CONFIG } from "./config/event";
 
-function getBaseImageUrl(date20: boolean, date21: boolean): string {
-  if (date20 && date21) return EVENT_CONFIG.bothDatesImage;
-  if (date20) return EVENT_CONFIG.dates[0].image;
-  if (date21) return EVENT_CONFIG.dates[1].image;
+function getBaseImageUrl(day1: boolean, day2: boolean): string {
+  if (day1 && day2) return EVENT_CONFIG.bothDatesImage;
+  if (day1) return EVENT_CONFIG.dates[0].image;
+  if (day2) return EVENT_CONFIG.dates[1].image;
   return EVENT_CONFIG.bothDatesImage;
 }
 
-function buildTweetUrl(date20: boolean, date21: boolean): string {
+function buildTweetUrl(day1: boolean, day2: boolean): string {
   let text: string = EVENT_CONFIG.tweetBaseText;
-  const [d20, d21] = EVENT_CONFIG.dates;
-
-  if (date20 && date21) {
-    text = `VketReal 2026 Summerに${d20.dateText}と${d21.dateText}で参加します!`;
-  } else if (date20) {
-    text = `VketReal 2026 Summerに${d20.dateText}に参加します!`;
-  } else if (date21) {
-    text = `VketReal 2026 Summerに${d21.dateText}に参加します!`;
+  const [d1, d2] = EVENT_CONFIG.dates;
+  const eventTitle = EVENT_CONFIG.title;
+  if (day1 && day2) {
+    text = `${eventTitle}に${d1.dateText}と${d2.dateText}で参加します!`;
+  } else if (day1) {
+    text = `${eventTitle}に${d1.dateText}に参加します!`;
+  } else if (day2) {
+    text = `${eventTitle}に${d2.dateText}に参加します!`;
   }
 
   return `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&hashtags=${EVENT_CONFIG.tweetHashtags}&url=${EVENT_CONFIG.tweetUrl}`;
@@ -31,8 +31,8 @@ async function main() {
   const imageUpload = document.getElementById(
     "imageUpload",
   ) as HTMLInputElement;
-  const date20Checkbox = document.getElementById("date25") as HTMLInputElement;
-  const date21Checkbox = document.getElementById("date26") as HTMLInputElement;
+  const day1Checkbox = document.getElementById("day1") as HTMLInputElement;
+  const day2Checkbox = document.getElementById("day2") as HTMLInputElement;
   const downloadButton = document.getElementById(
     "downloadButton",
   ) as HTMLButtonElement;
@@ -43,11 +43,11 @@ async function main() {
 
   const syncDateState = () => {
     renderer.setBaseImageUrl(
-      getBaseImageUrl(date20Checkbox.checked, date21Checkbox.checked),
+      getBaseImageUrl(day1Checkbox.checked, day2Checkbox.checked),
     );
     tweetLink.href = buildTweetUrl(
-      date20Checkbox.checked,
-      date21Checkbox.checked,
+      day1Checkbox.checked,
+      day2Checkbox.checked,
     );
   };
 
@@ -55,8 +55,8 @@ async function main() {
 
   nameInput.addEventListener("input", () => renderer.setName(nameInput.value));
   snsInput.addEventListener("input", () => renderer.setSns(snsInput.value));
-  date20Checkbox.addEventListener("change", syncDateState);
-  date21Checkbox.addEventListener("change", syncDateState);
+  day1Checkbox.addEventListener("change", syncDateState);
+  day2Checkbox.addEventListener("change", syncDateState);
 
   imageUpload.addEventListener("change", async () => {
     const file = imageUpload.files?.[0];
