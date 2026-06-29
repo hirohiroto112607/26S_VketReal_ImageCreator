@@ -6,13 +6,23 @@ export interface DateOption {
 }
 
 export const EVENT_CONFIG = {
-  title: 'VketReal 2025 Winter',
+  title: "VketReal 2026 Summer",
   dates: [
-    { id: 'date20', label: '12月20日 (SAT)', dateText: '12月20日', image: 'VkketReal25W-20.webp' },
-    { id: 'date21', label: '12月21日 (SUN)', dateText: '12月21日', image: 'VkketReal25W-21.webp' },
+    {
+      id: "date25",
+      label: "7月25日 (SAT)",
+      dateText: "7月25日",
+      image: "VketReal26S_25.png",
+    },
+    {
+      id: "date26",
+      label: "7月26日 (SUN)",
+      dateText: "7月26日",
+      image: "VketReal26S_26.png",
+    },
   ] as const satisfies readonly DateOption[],
-  bothDatesImage: 'VkketReal25W-20_21.webp',
-  tweetHashtags: 'VketReal参加',
-  tweetUrl: 'https://2025w.imagecreator.vrugd.jp/',
-  tweetBaseText: 'VketReal 2025 Winterに参加します!',
+  bothDatesImage: "VketReal26S_25_26.png",
+  tweetHashtags: "VketReal参加",
+  tweetUrl: "https://2026s.imagecreator.vrugd.jp/",
+  tweetBaseText: "VketReal 2026 Summerに参加します!",
 } as const;

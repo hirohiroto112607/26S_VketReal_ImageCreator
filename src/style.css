@@ -23,7 +23,7 @@ html,
 body {
   margin: 0;
   min-height: 100%;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   color: var(--text);
   background-color: var(--background);
 }
@@ -49,7 +49,13 @@ ol {
 .app-body {
   min-height: 100vh;
   padding: clamp(40px, 8vw, 64px) 16px;
-  background: radial-gradient(circle at top, rgba(255, 255, 255, 0.65) 0%, rgba(238, 242, 246, 0.9) 55%, rgba(220, 229, 239, 0.95) 100%),
+  background:
+    radial-gradient(
+      circle at top,
+      rgba(255, 255, 255, 0.65) 0%,
+      rgba(238, 242, 246, 0.9) 55%,
+      rgba(220, 229, 239, 0.95) 100%
+    ),
     var(--background);
   justify-content: center;
 }
@@ -75,11 +81,15 @@ ol {
 }
 
 .hero::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  background: linear-gradient(135deg, rgba(79, 109, 122, 0.08), rgba(79, 109, 122, 0));
+  background: linear-gradient(
+    135deg,
+    rgba(79, 109, 122, 0.08),
+    rgba(79, 109, 122, 0)
+  );
   pointer-events: none;
 }
 
@@ -148,7 +158,11 @@ ol {
 
 .notice-card {
   padding: clamp(20px, 3vw, 28px);
-  background: linear-gradient(135deg, rgba(79, 109, 122, 0.1), rgba(255, 255, 255, 0.92));
+  background: linear-gradient(
+    135deg,
+    rgba(79, 109, 122, 0.1),
+    rgba(255, 255, 255, 0.92)
+  );
   border: 1px solid var(--border-strong);
   border-radius: var(--radius);
   box-shadow: var(--shadow-soft);
@@ -315,7 +329,10 @@ ol {
   font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .button--primary {
@@ -357,11 +374,19 @@ canvas {
   width: 100%;
   height: auto;
   border-radius: 10px;
-  background: linear-gradient(135deg, rgba(16, 33, 43, 0.85), rgba(16, 33, 43, 0.92));
+  background: linear-gradient(
+    135deg,
+    rgba(16, 33, 43, 0.85),
+    rgba(16, 33, 43, 0.92)
+  );
 }
 
 .privacy-notice {
-  background: linear-gradient(135deg, rgba(79, 109, 122, 0.08), rgba(255, 255, 255, 0.95));
+  background: linear-gradient(
+    135deg,
+    rgba(79, 109, 122, 0.08),
+    rgba(255, 255, 255, 0.95)
+  );
   border: 1px solid var(--border);
   border-radius: var(--radius);
   box-shadow: var(--shadow-soft);
@@ -373,7 +398,11 @@ canvas {
   align-items: center;
   gap: 12px;
   padding: 20px 24px 16px;
-  background: linear-gradient(135deg, rgba(79, 109, 122, 0.05), rgba(79, 109, 122, 0.02));
+  background: linear-gradient(
+    135deg,
+    rgba(79, 109, 122, 0.05),
+    rgba(79, 109, 122, 0.02)
+  );
   border-bottom: 1px solid var(--border);
 }
 

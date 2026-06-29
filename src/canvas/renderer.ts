@@ -1,4 +1,4 @@
-import { EVENT_CONFIG } from '../config/event';
+import { EVENT_CONFIG } from "../config/event";
 
 const CANVAS_WIDTH = 1280;
 const CANVAS_HEIGHT = 720;
@@ -16,13 +16,13 @@ export class CanvasRenderer {
   private readonly baseImages = new Map<string, HTMLImageElement>();
   private baseImage: HTMLImageElement | null = null;
   private userImage: HTMLImageElement | null = null;
-  private name = '';
-  private sns = '';
+  private name = "";
+  private sns = "";
 
   constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) throw new Error('Failed to get 2D context');
+    const ctx = canvas.getContext("2d");
+    if (!ctx) throw new Error("Failed to get 2D context");
     this.ctx = ctx;
     canvas.width = CANVAS_WIDTH;
     canvas.height = CANVAS_HEIGHT;
@@ -35,7 +35,9 @@ export class CanvasRenderer {
       EVENT_CONFIG.bothDatesImage,
     ];
     await Promise.all(
-      urls.map(url => this.loadImg(url).then(img => this.baseImages.set(url, img)))
+      urls.map((url) =>
+        this.loadImg(url).then((img) => this.baseImages.set(url, img)),
+      ),
     );
   }
 
@@ -77,20 +79,20 @@ export class CanvasRenderer {
 
     if (this.userImage) this.drawUserImage();
 
-    ctx.fillStyle = '#333333';
-    ctx.font = 'bold 32px sans-serif';
-    ctx.textAlign = 'center';
+    ctx.fillStyle = "#333333";
+    ctx.font = "bold 32px sans-serif";
+    ctx.textAlign = "center";
     ctx.fillText(this.name, 334, 475);
     ctx.fillText(this.sns, 334, 585);
   }
 
   exportWebP(filename: string): void {
     if (!this.baseImage) {
-      alert('ベース画像を読み込んでからダウンロードしてください。');
+      alert("ベース画像を読み込んでからダウンロードしてください。");
       return;
     }
-    const url = this.canvas.toDataURL('image/webp');
-    const a = document.createElement('a');
+    const url = this.canvas.toDataURL("image/webp");
+    const a = document.createElement("a");
     a.href = url;
     a.download = filename;
     document.body.appendChild(a);
@@ -100,12 +102,16 @@ export class CanvasRenderer {
 
   private drawLoading(): void {
     const { ctx } = this;
-    ctx.fillStyle = '#e0e0e0';
+    ctx.fillStyle = "#e0e0e0";
     ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-    ctx.fillStyle = 'black';
-    ctx.font = '24px sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText('ベース画像を読み込んでいます...', CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);
+    ctx.fillStyle = "black";
+    ctx.font = "24px sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText(
+      "ベース画像を読み込んでいます...",
+      CANVAS_WIDTH / 2,
+      CANVAS_HEIGHT / 2,
+    );
   }
 
   private drawUserImage(): void {
@@ -115,7 +121,8 @@ export class CanvasRenderer {
     const boxRatio = IMG_WIDTH / IMG_HEIGHT;
     const imgRatio = userImage.width / userImage.height;
 
-    let sx = 0, sy = 0;
+    let sx = 0,
+      sy = 0;
     let sWidth = userImage.width;
     let sHeight = userImage.height;
 
@@ -131,7 +138,17 @@ export class CanvasRenderer {
     ctx.beginPath();
     ctx.roundRect(IMG_X, IMG_Y, IMG_WIDTH, IMG_HEIGHT, IMG_RADIUS);
     ctx.clip();
-    ctx.drawImage(userImage, sx, sy, sWidth, sHeight, IMG_X, IMG_Y, IMG_WIDTH, IMG_HEIGHT);
+    ctx.drawImage(
+      userImage,
+      sx,
+      sy,
+      sWidth,
+      sHeight,
+      IMG_X,
+      IMG_Y,
+      IMG_WIDTH,
+      IMG_HEIGHT,
+    );
     ctx.restore();
   }
 
@@ -139,7 +156,8 @@ export class CanvasRenderer {
     return new Promise((resolve, reject) => {
       const img = new Image();
       img.onload = () => resolve(img);
-      img.onerror = () => reject(new Error(`画像の読み込みに失敗しました: ${src}`));
+      img.onerror = () =>
+        reject(new Error(`画像の読み込みに失敗しました: ${src}`));
       img.src = src;
     });
   }
@@ -150,8 +168,8 @@ function readFileAsDataUrl(file: File): Promise<string> {
     const reader = new FileReader();
     reader.onload = (e) => {
       const result = e.target?.result;
-      if (typeof result === 'string') resolve(result);
-      else reject(new Error('ファイルの読み込みに失敗しました'));
+      if (typeof result === "string") resolve(result);
+      else reject(new Error("ファイルの読み込みに失敗しました"));
     };
     reader.onerror = reject;
     reader.readAsDataURL(file);
