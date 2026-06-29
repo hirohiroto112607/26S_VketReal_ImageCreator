@@ -169,3 +169,4 @@ dist
 .env*
 !.env.example
 .wrangler/
+pnpm-workspace.yaml

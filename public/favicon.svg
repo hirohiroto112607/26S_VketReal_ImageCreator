@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <defs>
+    <linearGradient id="cardBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#4338ca"/>
+    </linearGradient>
+    <linearGradient id="shine" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- カード本体 -->
+  <rect x="2" y="3" width="28" height="26" rx="5" ry="5" fill="url(#cardBg)"/>
+  <!-- シャイン -->
+  <rect x="2" y="3" width="28" height="13" rx="5" ry="5" fill="url(#shine)"/>
+
+  <!-- 太陽（サマー） -->
+  <circle cx="24" cy="9" r="3.5" fill="#fbbf24" opacity="0.92"/>
+  <line x1="24" y1="4.5" x2="24" y2="3.5" stroke="#fbbf24" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="24" y1="13.5" x2="24" y2="14.5" stroke="#fbbf24" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="19.5" y1="9" x2="18.5" y2="9" stroke="#fbbf24" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="28.5" y1="9" x2="29.5" y2="9" stroke="#fbbf24" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="21" y1="6" x2="20.4" y2="5.4" stroke="#fbbf24" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="27" y1="12" x2="27.6" y2="12.6" stroke="#fbbf24" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="27" y1="6" x2="27.6" y2="5.4" stroke="#fbbf24" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="21" y1="12" x2="20.4" y2="12.6" stroke="#fbbf24" stroke-width="1.2" stroke-linecap="round"/>
+
+  <!-- "V" ロゴ -->
+  <text
+    x="13"
+    y="25"
+    font-family="Arial, Helvetica, sans-serif"
+    font-weight="900"
+    font-size="19"
+    fill="white"
+    letter-spacing="-1"
+  >V</text>
+</svg>
