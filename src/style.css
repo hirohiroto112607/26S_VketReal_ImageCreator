@@ -388,6 +388,11 @@ canvas {
   gap: 4px;
 }
 
+.app-footer__hikky {
+  letter-spacing: 0.02em;
+  color: var(--text-muted);
+}
+
 @media (max-width: 960px) {
   .layout-grid {
     grid-template-columns: 1fr;
