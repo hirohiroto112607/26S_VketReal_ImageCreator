@@ -24,7 +24,7 @@ src/
   main.ts             # エントリーポイント（DOM 操作・イベントハンドラ）
   style.css           # Tailwind + カスタムスタイル
 index.html            # 単一ページ
-VketReal26S_*.png     # カードテンプレート画像（日程別）
+VketReal26S_*.webp     # カードテンプレート画像（日程別）
 ```
 
 スタック: Vite + TypeScript + Tailwind CSS v3 + HTML5 Canvas。フレームワークなし（素の DOM 操作）。
@@ -32,5 +32,5 @@ VketReal26S_*.png     # カードテンプレート画像（日程別）
 ## 運用ルール
 
 - **次回イベント対応は `src/config/event.ts` の `EVENT_CONFIG` を編集するのが基本**。日付・画像・テキストはすべてここに集約されている。ロジック側に日付や文言をハードコードしない
-- テンプレート画像を差し替えたらルートの `VketReal26S_*.png` と `public/` の整合を確認する
+- テンプレート画像を差し替えたらルートの `VketReal26S_*.webp` と `public/` の整合を確認する
 - Cloudflare Workers/Pages の API・制限を扱うときは <https://developers.cloudflare.com/workers/> の最新ドキュメントを参照する（学習済み知識は古い可能性がある）
