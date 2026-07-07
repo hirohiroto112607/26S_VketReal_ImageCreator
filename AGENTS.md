@@ -1,41 +1,36 @@
-# Cloudflare Workers
+# AGENTS.md
 
-STOP. Your knowledge of Cloudflare Workers APIs and limits may be outdated. Always retrieve current documentation before any Workers, KV, R2, D1, Durable Objects, Queues, Vectorize, AI, or Agents SDK task.
+## プロジェクト概要
 
-## Docs
+VketReal 2026 Summer 参加表明カードジェネレーター。名前・SNS アカウント・プロフィール画像・参加日程（7/25・7/26）を入力してカード画像（WebP）を生成し、X への投稿リンクを出すウェブアプリ。画像生成は **ブラウザ内の Canvas で完結**（サーバーアップロードなし）。コミュニティ制作の非公式ツール。
 
-- <https://developers.cloudflare.com/workers/>
-- MCP: `https://docs.mcp.cloudflare.com/mcp`
+## コマンド
 
-For all limits and quotas, retrieve from the product's `/platform/limits/` page. eg. `/workers/platform/limits`
+```bash
+pnpm install
+pnpm dev        # 開発サーバー（HMR）
+pnpm build      # 本番ビルド → dist/
+pnpm preview    # ビルド結果確認
+npx wrangler pages deploy   # Cloudflare Pages へデプロイ（wrangler.toml: vketreal-imagecreator）
+npx biome check --write .   # lint + format
+```
 
-## Commands
+## 構成
 
-| Command | Purpose |
-| --------- | --------- |
-| `npx wrangler dev` | Local development |
-| `npx wrangler deploy` | Deploy to Cloudflare |
-| `npx wrangler types` | Generate TypeScript types |
+```
+src/
+  config/event.ts     # イベント設定（日付・テンプレート画像・ツイートテキスト）
+  canvas/renderer.ts  # Canvas 描画ロジック（カード生成の本体）
+  main.ts             # エントリーポイント（DOM 操作・イベントハンドラ）
+  style.css           # Tailwind + カスタムスタイル
+index.html            # 単一ページ
+VketReal26S_*.png     # カードテンプレート画像（日程別）
+```
 
-Run `wrangler types` after changing bindings in wrangler.jsonc.
+スタック: Vite + TypeScript + Tailwind CSS v3 + HTML5 Canvas。フレームワークなし（素の DOM 操作）。
 
-## Node.js Compatibility
+## 運用ルール
 
-<https://developers.cloudflare.com/workers/runtime-apis/nodejs/>
-
-## Errors
-
-- **Error 1102** (CPU/Memory exceeded): Retrieve limits from `/workers/platform/limits/`
-- **All errors**: <https://developers.cloudflare.com/workers/observability/errors/>
-
-## Product Docs
-
-Retrieve API references and limits from:
-`/kv/` · `/r2/` · `/d1/` · `/durable-objects/` · `/queues/` · `/vectorize/` · `/workers-ai/` · `/agents/`
-
-## Best Practices (conditional)
-
-If the application uses Durable Objects or Workflows, refer to the relevant best practices:
-
-- Durable Objects: <https://developers.cloudflare.com/durable-objects/best-practices/rules-of-durable-objects/>
-- Workflows: <https://developers.cloudflare.com/workflows/build/rules-of-workflows/>
+- **次回イベント対応は `src/config/event.ts` の `EVENT_CONFIG` を編集するのが基本**。日付・画像・テキストはすべてここに集約されている。ロジック側に日付や文言をハードコードしない
+- テンプレート画像を差し替えたらルートの `VketReal26S_*.png` と `public/` の整合を確認する
+- Cloudflare Workers/Pages の API・制限を扱うときは <https://developers.cloudflare.com/workers/> の最新ドキュメントを参照する（学習済み知識は古い可能性がある）

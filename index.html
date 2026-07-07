@@ -148,21 +148,23 @@
               <button
                 type="button"
                 id="downloadButton"
-                class="button button--primary"
+                class="button button--highlight"
               >
-                画像を生成・ダウンロード
+                ① 画像を生成・ダウンロード
               </button>
               <a
-                id="tweetLink"
-                href="https://twitter.com/intent/tweet"
+                id="postLink"
+                href="https://x.com/intent/post"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="button button--twitter"
+                class="button disabled"
+                aria-disabled="true"
+                tabindex="-1"
               >
-                ツイートする
+                ② ポストする
               </a>
-              <p class="small-note">
-                生成処理はブラウザ内で完結します。アップロードした画像がサーバーに送信されることはありません。
+              <p class="post-note">
+                ※システムの仕様上、画像は自動で添付されません。画像をダウンロード後、ポスト画面で貼り付け（添付）して投稿してください。
               </p>
             </div>
           </div>
@@ -175,6 +177,9 @@
           <div class="canvas-frame">
             <canvas id="passCardCanvas" width="640" height="360"></canvas>
           </div>
+          <p class="privacy-note">
+            生成処理はブラウザ内で完結します。アップロードした画像がサーバーに送信されることはありません。
+          </p>
         </div>
       </section>
     </main>

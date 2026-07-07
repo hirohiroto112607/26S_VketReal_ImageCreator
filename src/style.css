@@ -302,13 +302,59 @@ ol {
   background: var(--primary-dark);
 }
 
-.button--twitter {
-  background: #1d9bf0;
+.button--x {
+  background: #000000;
   color: #ffffff;
 }
 
-.button--twitter:hover {
-  background: #1a8cd8;
+.button--x:hover {
+  background: #272c30;
+}
+
+.button--highlight {
+  background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.25);
+  border: none;
+}
+
+.button--highlight:hover {
+  background: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%);
+  box-shadow: 0 6px 16px rgba(14, 165, 233, 0.4);
+}
+
+.button--muted {
+  background: #e2e8f0;
+  color: #475569 !important;
+  border: 1px solid #cbd5e1;
+}
+
+.button--muted:hover {
+  background: #cbd5e1;
+}
+
+.button.disabled {
+  background: #f1f5f9 !important;
+  color: #94a3b8 !important;
+  border: 1px solid #e2e8f0;
+  opacity: 0.7;
+  pointer-events: none;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.post-note {
+  font-size: 0.8rem;
+  color: #d97706;
+  line-height: 1.4;
+  margin-top: 4px;
+}
+
+.privacy-note {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  text-align: center;
+  margin-top: 8px;
 }
 
 .small-note {

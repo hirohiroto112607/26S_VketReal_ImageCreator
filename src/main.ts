@@ -9,8 +9,8 @@ function getBaseImageUrl(day1: boolean, day2: boolean): string {
   return EVENT_CONFIG.bothDatesImage;
 }
 
-function buildTweetUrl(day1: boolean, day2: boolean): string {
-  let text: string = EVENT_CONFIG.tweetBaseText;
+function buildPostUrl(day1: boolean, day2: boolean): string {
+  let text: string = EVENT_CONFIG.postBaseText;
   const [d1, d2] = EVENT_CONFIG.dates;
   const eventTitle = EVENT_CONFIG.title;
   if (day1 && day2) {
@@ -21,7 +21,7 @@ function buildTweetUrl(day1: boolean, day2: boolean): string {
     text = `${eventTitle}に${d2.dateText}に参加します!`;
   }
 
-  return `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&hashtags=${EVENT_CONFIG.tweetHashtags}&url=${EVENT_CONFIG.tweetUrl}`;
+  return `https://x.com/intent/post?text=${encodeURIComponent(text)}&hashtags=${EVENT_CONFIG.postHashtags}&url=${EVENT_CONFIG.postUrl}`;
 }
 
 async function main() {
@@ -36,27 +36,64 @@ async function main() {
   const downloadButton = document.getElementById(
     "downloadButton",
   ) as HTMLButtonElement;
-  const tweetLink = document.getElementById("tweetLink") as HTMLAnchorElement;
+  const postLink = document.getElementById("postLink") as HTMLAnchorElement;
 
   const renderer = new CanvasRenderer(canvas);
   await renderer.preload();
+
+  const updateButtonStates = (downloaded: boolean) => {
+    if (downloaded) {
+      downloadButton.classList.remove("button--highlight");
+      downloadButton.classList.add("button--muted");
+
+      postLink.classList.remove("disabled");
+      postLink.classList.add("button--highlight");
+      postLink.removeAttribute("aria-disabled");
+      postLink.removeAttribute("tabindex");
+    } else {
+      downloadButton.classList.remove("button--muted");
+      downloadButton.classList.add("button--highlight");
+
+      postLink.classList.remove("button--highlight");
+      postLink.classList.add("disabled");
+      postLink.setAttribute("aria-disabled", "true");
+      postLink.setAttribute("tabindex", "-1");
+    }
+  };
 
   const syncDateState = () => {
     renderer.setBaseImageUrl(
       getBaseImageUrl(day1Checkbox.checked, day2Checkbox.checked),
     );
-    tweetLink.href = buildTweetUrl(
+    postLink.href = buildPostUrl(
       day1Checkbox.checked,
       day2Checkbox.checked,
     );
   };
 
-  syncDateState();
+  const handleInputChange = () => {
+    updateButtonStates(false);
+  };
 
-  nameInput.addEventListener("input", () => renderer.setName(nameInput.value));
-  snsInput.addEventListener("input", () => renderer.setSns(snsInput.value));
-  day1Checkbox.addEventListener("change", syncDateState);
-  day2Checkbox.addEventListener("change", syncDateState);
+  syncDateState();
+  updateButtonStates(false);
+
+  nameInput.addEventListener("input", () => {
+    renderer.setName(nameInput.value);
+    handleInputChange();
+  });
+  snsInput.addEventListener("input", () => {
+    renderer.setSns(snsInput.value);
+    handleInputChange();
+  });
+  day1Checkbox.addEventListener("change", () => {
+    syncDateState();
+    handleInputChange();
+  });
+  day2Checkbox.addEventListener("change", () => {
+    syncDateState();
+    handleInputChange();
+  });
 
   imageUpload.addEventListener("change", async () => {
     const file = imageUpload.files?.[0];
@@ -65,11 +102,13 @@ async function main() {
     } else {
       renderer.clearUserImage();
     }
+    handleInputChange();
   });
 
   downloadButton.addEventListener("click", () => {
     const name = nameInput.value.trim().replace(/\s+/g, "_") || "vket_user";
     renderer.exportWebP(`${name}_profile_card.webp`);
+    updateButtonStates(true);
   });
 }
 
