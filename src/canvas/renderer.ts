@@ -16,6 +16,7 @@ export class CanvasRenderer {
   private readonly ctx: CanvasRenderingContext2D;
   private readonly baseImages = new Map<string, HTMLImageElement>();
   private baseImage: HTMLImageElement | null = null;
+  private currentBaseImageUrl = "";
   private userImage: HTMLImageElement | null = null;
   private name = "";
   private sns = "";
@@ -30,21 +31,51 @@ export class CanvasRenderer {
   }
 
   async preload(): Promise<void> {
-    const urls = [
-      EVENT_CONFIG.dates[0].image,
-      EVENT_CONFIG.dates[1].image,
-      EVENT_CONFIG.bothDatesImage,
-    ];
-    await Promise.all(
-      urls.map((url) =>
-        this.loadImg(url).then((img) => this.baseImages.set(url, img)),
-      ),
-    );
+    const primaryUrl = EVENT_CONFIG.bothDatesImage;
+    try {
+      const img = await this.loadImg(primaryUrl);
+      this.baseImages.set(primaryUrl, img);
+    } catch (error) {
+      console.error("Failed to preload primary image:", error);
+    }
+
+    const secondaryUrls = EVENT_CONFIG.dates.map((d) => d.image);
+    for (const url of secondaryUrls) {
+      this.loadImg(url)
+        .then((img) => {
+          this.baseImages.set(url, img);
+          if (this.currentBaseImageUrl === url) {
+            this.setBaseImageUrl(url);
+          }
+        })
+        .catch((err) => {
+          console.error(`Failed to load secondary image in background: ${url}`, err);
+        });
+    }
   }
 
   setBaseImageUrl(url: string): void {
-    this.baseImage = this.baseImages.get(url) ?? null;
-    this.redraw();
+    this.currentBaseImageUrl = url;
+    const img = this.baseImages.get(url);
+    if (img) {
+      this.baseImage = img;
+      this.redraw();
+    } else {
+      this.baseImage = null;
+      this.redraw();
+
+      this.loadImg(url)
+        .then((loadedImg) => {
+          this.baseImages.set(url, loadedImg);
+          if (this.currentBaseImageUrl === url) {
+            this.baseImage = loadedImg;
+            this.redraw();
+          }
+        })
+        .catch((err) => {
+          console.error(`Failed to load image on demand: ${url}`, err);
+        });
+    }
   }
 
   setName(name: string): void {
